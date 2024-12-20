@@ -3,6 +3,7 @@ import { Request,Response } from "express"
 import { checkPassword, hashPassword } from "../utils/auth"
 // import slug from "slug";
 import slugify from "slugify"
+import { generateJWT } from "../utils/jwt"
 
 export const createAccount =async (req:Request,res:Response)=>{
 
@@ -53,6 +54,8 @@ export const login = async(req:Request,res:Response)=>{
         res.status(401).json({error:error.message})
         return
     }
-   res.send('Authenticado')
+
+    const token = generateJWT({id:userExist.id})
+    res.send(token)
 }
 

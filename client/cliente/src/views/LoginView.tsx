@@ -8,7 +8,6 @@ import { api } from "../config/axios"
 
 export default function LoginView() {
  
-
   const initialValues ={
     email:'',
     password:''
@@ -18,9 +17,7 @@ export default function LoginView() {
   const handleLogin = async(formData:LoginForm) => {
     try {
       const {data} = await api.post(`/auth/login`,formData)
-      console.log(data);
-      
-
+      localStorage.setItem('AUTH_TOKEN',data)
       toast.success(data)
       reset();
       
