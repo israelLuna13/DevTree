@@ -7,6 +7,8 @@ const tabs = [
     { name: 'Mi Perfil', href: '/admin/profile', icon: UserIcon },
 ]
 
+//the function join class separate for space white
+//return the text with the join class
 function classNames(...classes: string[]) {
     return classes.filter(Boolean).join(' ')
 }
@@ -16,12 +18,14 @@ export default function NavigationTabs() {
     const navigate = useNavigate()
 
     //function for change the page or view
+    //this function will execute when the user saw the web on her mobile
     const handleChange = (e:React.ChangeEvent<HTMLSelectElement>) => {
        navigate(e.target.value);
     }
 
     return (
         <div className='mb-5'>
+            {/* MOBILE */}
             <div className="sm:hidden">
                 <label htmlFor="tabs" className="sr-only">
                     Select a tab

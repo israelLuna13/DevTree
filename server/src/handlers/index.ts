@@ -58,4 +58,8 @@ export const login = async(req:Request,res:Response)=>{
     const token = generateJWT({id:userExist.id})
     res.send(token)
 }
-
+export const getUser= async(req:Request,res:Response)=>{
+    console.log(req.user);
+    
+  
+}
