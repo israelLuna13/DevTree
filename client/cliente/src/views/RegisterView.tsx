@@ -134,7 +134,7 @@ export default function RegisterView() {
             Repetir Password
           </label>
           <input
-            id="password"
+            id="password_confirm"
             type="password"
             placeholder="Repetir Password"
             className="bg-slate-100 border-none p-3 rounded-lg placeholder-slate-400"

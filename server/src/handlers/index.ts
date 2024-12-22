@@ -59,7 +59,39 @@ export const login = async(req:Request,res:Response)=>{
     res.send(token)
 }
 export const getUser= async(req:Request,res:Response)=>{
-    console.log(req.user);
-    
-  
+    res.json(req.user);
+}
+
+export const updateProfile= async(req:Request,res:Response)=>{
+    try {
+       const {description} = req.body
+        //cast the user name to lowecase and join all words
+        const handle = slugify(req.body.handle,
+            {
+            replacement:'',
+            lower:true})
+
+        const handleExist = await User.findOne({handle})
+        //if the user wanna change her user name for other that be in the registered
+        //if the email of user in session is diferent email user in the database
+        if(handleExist && handleExist.email !== req.user.email)
+            {
+                const error = new Error('User name doesnt enable')
+                res.status(409).json({error:error.message})
+                return
+            }
+
+        //update user
+        req.user.description = description
+        req.user.handle = handle
+        await req.user.save()
+        res.send('Profile updated')
+
+        
+    } catch (e) {
+        console.log(e);
+        const error = new Error('There is issuse')
+             res.status(409).json({error:error.message})
+             return
+    }
 }
