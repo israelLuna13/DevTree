@@ -2,7 +2,7 @@ import {useForm} from 'react-hook-form'
 import ErrorMessage from '../components/ErrorMessage';
 import { useQueryClient,useMutation } from '@tanstack/react-query';
 import { IUser, ProfileForm } from '../types';
-import { updateProfile } from '../services/DevTreeService';
+import { updateProfile, uploadImage } from '../services/DevTreeService';
 import { toast } from 'sonner';
 export default function ProfileView() {
 
@@ -28,6 +28,31 @@ const updateProfileMutation = useMutation({
     queryClient.invalidateQueries({queryKey:['user']})
   }
 })
+
+//upload image
+const uploadImageMutation = useMutation({
+  mutationFn:uploadImage,
+  onError:(error)=>{
+    toast.error(error.message)    
+  },
+  onSuccess:(data)=>{
+    // we do that because I want update the image be fast
+    //clear cache and we going to execute the service get user and we update the image in the user
+   queryClient.setQueryData(['user'],(prevData:IUser)=>{
+    return {
+      ...prevData,
+        image:data
+    }
+   })
+   //queryClient.invalidateQueries({queryKey:['user']})
+  }
+})
+const handleChange = (e: React.ChangeEvent<HTMLInputElement>) =>
+{
+  if(e.target.files){
+    uploadImageMutation.mutate(e.target.files[0])
+  }
+}
 const handleUserProfileForm=(formData:ProfileForm) => {
   //execute mutation
   updateProfileMutation.mutate(formData)
@@ -72,7 +97,7 @@ const handleUserProfileForm=(formData:ProfileForm) => {
           name="handle"
           className="border-none bg-slate-100 rounded-lg p-2"
           accept="image/*"
-          onChange={() => {}}
+          onChange={handleChange}
         />
       </div>
 

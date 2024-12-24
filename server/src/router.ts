@@ -1,6 +1,6 @@
 import {Router} from 'express'
 import { body } from 'express-validator'
-import { createAccount, login,getUser,updateProfile } from './handlers'
+import { createAccount, login,getUser,updateProfile, uploadImage } from './handlers'
 import { handleInputErrors } from './middleware/validation'
 import { authenticate } from './middleware/auth'
 
@@ -24,4 +24,5 @@ router.get('/auth/user',authenticate,getUser)
 router.patch('/auth/user', 
     body('handle').notEmpty().withMessage("The user is required"),
     body('description').notEmpty().withMessage("The description is required") ,handleInputErrors,authenticate,updateProfile)
+router.post('/user/image',authenticate,uploadImage)
 export default router

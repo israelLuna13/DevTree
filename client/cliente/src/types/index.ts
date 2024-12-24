@@ -4,7 +4,8 @@ export interface IUser
     email:string,
     handle:string,
     _id:string,
-    description:string
+    description:string,
+    image:string
 }
 
 export type RegisterForm = Pick<IUser,'handle'|'email'|'name'>&{

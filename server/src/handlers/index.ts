@@ -3,6 +3,9 @@ import { Request,Response } from "express"
 import { checkPassword, hashPassword } from "../utils/auth"
 // import slug from "slug";
 import slugify from "slugify"
+import formidable from 'formidable'
+import { v4 as uuid } from "uuid"
+import cloudinary from "../config/cloudinary"
 import { generateJWT } from "../utils/jwt"
 
 export const createAccount =async (req:Request,res:Response)=>{
@@ -86,12 +89,41 @@ export const updateProfile= async(req:Request,res:Response)=>{
         req.user.handle = handle
         await req.user.save()
         res.send('Profile updated')
-
         
     } catch (e) {
         console.log(e);
         const error = new Error('There is issuse')
-             res.status(409).json({error:error.message})
+             res.status(500).json({error:error.message})
              return
+    }
+}
+
+export const uploadImage= async(req:Request,res:Response)=>
+{
+    try {
+       const form = formidable({multiples:false})
+       
+       form.parse(req,(error,fields,files)=>{
+        cloudinary.uploader.upload(files.file[0].filepath,{public_id:uuid()},
+             async function(error,result){
+                if(error)
+                {
+                    const error = new Error('There is issuse upload image')
+                    res.status(500).json({error:error.message})
+                    return
+                }
+                if(result)
+                {
+                    req.user.image = result.secure_url
+                    await req.user.save()
+                    res.json({image:result.secure_url})
+                }
+        })
+       })
+        
+    } catch (e) {
+        const error = new Error('There is issuse')
+        res.status(500).json({error:error.message})
+        return
     }
 }
