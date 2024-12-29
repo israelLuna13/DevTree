@@ -54,8 +54,13 @@ const handleChange = (e: React.ChangeEvent<HTMLInputElement>) =>
   }
 }
 const handleUserProfileForm=(formData:ProfileForm) => {
+  //get data in cache
+  const user:IUser = queryClient.getQueryData(['user'])!
+  //update the data that be in cache with data come the formData
+  user.description = formData.description;
+  user.handle = formData.handle
   //execute mutation
-  updateProfileMutation.mutate(formData)
+  updateProfileMutation.mutate(user)
 }
 
   return (

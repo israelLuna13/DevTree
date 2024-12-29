@@ -1,6 +1,6 @@
 import { isAxiosError } from "axios";
 import { api } from "../config/axios";
-import { IUser, ProfileForm } from "../types";
+import { IUser } from "../types";
 
 // we put the token in the headers on the file config/axios
 
@@ -22,7 +22,7 @@ export async function getUser(){
             }
     }
 }
-export async function updateProfile(formData:ProfileForm){
+export async function updateProfile(formData:IUser){
 
   try {
       const {data} = await api.patch<string>('/auth/user',formData)

@@ -1,5 +1,6 @@
 import { BookmarkSquareIcon, UserIcon } from '@heroicons/react/20/solid'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { classNames } from '../utils'
 
 //pages or view of menu
 const tabs = [
@@ -9,9 +10,9 @@ const tabs = [
 
 //the function join class separate for space white
 //return the text with the join class
-function classNames(...classes: string[]) {
-    return classes.filter(Boolean).join(' ')
-}
+// function classNames(...classes: string[]) {
+//     return classes.filter(Boolean).join(' ')
+// }
 
 export default function NavigationTabs() {
     const location = useLocation()
