@@ -7,7 +7,6 @@ type DevTreeInputProps={
     handleEnableLink: (socialNetwork:string) =>void
 }
 export default function DevTreeInput({item,handleUrlChange,handleEnableLink}:DevTreeInputProps) {
-    console.log(item);
     
   return (
     <div className="bg-white shadow-sm p-5 flex items-center gap-3">
