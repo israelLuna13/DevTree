@@ -99,32 +99,50 @@ export const updateProfile= async(req:Request,res:Response)=>{
     }
 }
 
-export const uploadImage= async(req:Request,res:Response)=>
-{
+export const uploadImage = async (req: Request, res: Response) => {
+  try {
+    const form = formidable({ multiples: false });
+
+    form.parse(req, (error, fields, files) => {
+      cloudinary.uploader.upload(
+        files.file[0].filepath,
+        { public_id: uuid() },
+        async function (error, result) {
+          if (error) {
+            const error = new Error("There is issuse upload image");
+            res.status(500).json({ error: error.message });
+            return;
+          }
+          if (result) {
+            req.user.image = result.secure_url;
+            await req.user.save();
+            res.json({ image: result.secure_url });
+          }
+        }
+      );
+    });
+  } catch (e) {
+    const error = new Error("There is issuse");
+    res.status(500).json({ error: error.message });
+    return;
+  }
+};
+export const getUserByHandle= async(req:Request,res:Response) =>{
     try {
-       const form = formidable({multiples:false})
-       
-       form.parse(req,(error,fields,files)=>{
-        cloudinary.uploader.upload(files.file[0].filepath,{public_id:uuid()},
-             async function(error,result){
-                if(error)
-                {
-                    const error = new Error('There is issuse upload image')
-                    res.status(500).json({error:error.message})
-                    return
-                }
-                if(result)
-                {
-                    req.user.image = result.secure_url
-                    await req.user.save()
-                    res.json({image:result.secure_url})
-                }
-        })
-       })
+        const {handle} = req.params
+        const user = await User.findOne({handle}).select('-_id -__v -email -password')
+        if(!user)
+        {
+            const error = new Error('The user does not exist')
+            res.status(404).json({error:error.message})
+            return
+        }
+        res.json(user);
         
     } catch (e) {
+        console.log(e);
         const error = new Error('There is issuse')
-        res.status(500).json({error:error.message})
-        return
+             res.status(500).json({error:error.message})
+             return
     }
 }

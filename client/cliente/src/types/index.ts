@@ -9,6 +9,8 @@ export interface IUser
     links:string
 }
 
+export type UserHanlde = Pick<IUser, 'description' | 'handle' | 'name'|'image' | 'links' >
+
 export type RegisterForm = Pick<IUser,'handle'|'email'|'name'>&{
     password:string,
     password_confirmation:string
