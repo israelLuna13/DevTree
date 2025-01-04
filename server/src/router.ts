@@ -1,6 +1,6 @@
 import {Router} from 'express'
 import { body } from 'express-validator'
-import { createAccount, login,getUser,updateProfile, uploadImage, getUserByHandle, searchByHandle } from './handlers'
+import { createAccount, login,getUser,updateProfile, uploadImage, getUserByHandle, searchByHandle, changePassword } from './handlers'
 import { handleInputErrors } from './middleware/validation'
 import { authenticate } from './middleware/auth'
 
@@ -28,6 +28,16 @@ router.patch('/auth/user',
 router.post('/user/image',authenticate,uploadImage)
 
 router.get('/:handle',getUserByHandle)
+
+router.patch('/change-passsword',
+        body('password').notEmpty().withMessage('The password is required'),
+        body('password_new').notEmpty().isLength({min:6,max:10}).withMessage("The user is required").withMessage('The password must be 6 characters min and 8 charactrs max'),
+        handleInputErrors,
+        authenticate,
+        changePassword
+)
+
+//public
 
 router.post('/search', 
         body('handle').notEmpty().withMessage("The handle is required"),

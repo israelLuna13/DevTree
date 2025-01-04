@@ -170,3 +170,39 @@ export const searchByHandle= async(req:Request,res:Response) =>{
          return
   }
 }
+
+export const changePassword= async(req:Request,res:Response) =>{
+  try {
+    const {password,password_new} = req.body
+    //take email of user on session
+    const {email} = req.user
+
+    //search user 
+    const userExist = await User.findOne({email})
+    if(!userExist)
+    {
+      const error = new Error('The user does not exist')
+      res.status(404).json({error:error.message})
+      return
+    }
+    
+    //check if the password is correct 
+    const passwordCorrect =await checkPassword(password,userExist.password) 
+    if(!passwordCorrect)
+    {
+      const error = new Error('Password incorrect')
+      res.status(401).json({error:error.message})
+      return
+    }
+    //update password
+    userExist.password = await hashPassword(password_new)
+    userExist.save()
+    res.send('Password updated successfully')
+    
+  } catch (e) {
+    console.log(e);
+    const error = new Error('There is issuse')
+         res.status(500).json({error:error.message})
+         return
+  }
+}

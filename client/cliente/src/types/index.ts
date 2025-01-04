@@ -30,3 +30,8 @@ export type socialNetwork = {
 }
 
 export type DevTreeLink = Pick<socialNetwork, 'enabled' | 'name' | 'url'>
+
+export type ChangePassword = Pick<RegisterForm, 'password' | 'password_confirmation'>&
+{
+    password_new:string
+}

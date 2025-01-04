@@ -1,6 +1,6 @@
 import { isAxiosError } from "axios";
 import { api } from "../config/axios";
-import { IUser, LoginForm, RegisterForm, UserHanlde } from "../types";
+import { ChangePassword, IUser, LoginForm, RegisterForm, UserHanlde } from "../types";
 
 // we put the token in the headers on the file config/axios
 
@@ -112,6 +112,24 @@ export async function searchByHandle(handle:string){
 
   try {
       const {data} = await api.post<string>(`/search`,{handle})
+      // const {data} = await api.get('/auth/user',{
+      //     headers:{
+      //         Authorization:`Bearer ${token}`
+      //     }
+      // })      
+      return data        
+  } catch (error) {
+         //we validate type error for filtrate the errors
+         if(isAxiosError(error)&& error.response)
+          {
+            throw new Error(error.response?.data.error)
+          }
+  }
+}
+export async function updatePassword(formData:ChangePassword){
+
+  try {
+      const {data} = await api.patch<string>(`/change-passsword`,formData)
       // const {data} = await api.get('/auth/user',{
       //     headers:{
       //         Authorization:`Bearer ${token}`

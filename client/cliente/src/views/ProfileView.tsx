@@ -110,7 +110,7 @@ const handleUserProfileForm=(formData:ProfileForm) => {
       <input
         type="submit"
         className="bg-cyan-400 p-2 text-lg w-full uppercase text-slate-600 rounded-lg font-bold cursor-pointer"
-        value="Guardar Cambios"
+        value="Save changes"
       />
     </form>
   );
