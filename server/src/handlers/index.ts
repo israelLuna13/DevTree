@@ -146,3 +146,27 @@ export const getUserByHandle= async(req:Request,res:Response) =>{
              return
     }
 }
+
+export const searchByHandle= async(req:Request,res:Response) =>{
+  try {
+    const {handle} = req.body
+    
+
+    const userExist = await User.findOne({handle})
+    if(userExist)
+    {
+      const error = new Error(`${handle} is registered`)
+      res.status(409).json({error:error.message})
+      return
+    }
+
+    res.send(`${handle} is available`)
+    
+    
+  } catch (e) {
+    console.log(e);
+    const error = new Error('There is issuse')
+         res.status(500).json({error:error.message})
+         return
+  }
+}

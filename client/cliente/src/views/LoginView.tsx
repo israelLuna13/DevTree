@@ -1,36 +1,37 @@
-import { Link } from "react-router-dom"
+import { Link,useNavigate } from "react-router-dom"
 import { useForm } from "react-hook-form"
 import ErrorMessage from "../components/ErrorMessage"
-import { LoginForm } from "../types"
 import { toast } from "sonner"
-import { isAxiosError } from "axios"
-import { api } from "../config/axios"
+import { useMutation } from "@tanstack/react-query"
+import { login } from "../services/DevTreeService"
+import { LoginForm } from "../types"
 
 export default function LoginView() {
- 
+  
+  const navigate = useNavigate()
   const initialValues ={
     email:'',
     password:''
   }
+
   const {register,reset,handleSubmit,formState:{errors}}= useForm({defaultValues:initialValues})
-  
-  const handleLogin = async(formData:LoginForm) => {
-    try {
-      const {data} = await api.post(`/auth/login`,formData)
-      localStorage.setItem('AUTH_TOKEN',data)
-      toast.success(data)
-      reset();
-      
-    } catch (error) {
-           //we validate type error for filtrate the errors
-          if(isAxiosError(error)&& error.response)
-          {
-            toast.error(error.response?.data.error)
-          }
+
+  const loginMutate = useMutation({
+    mutationFn:login,
+    onError:(error)=>{
+      toast.error(error.message)
+    },
+    onSuccess:(data)=>{
+      localStorage.setItem('AUTH_TOKEN', data)
+      navigate('/admin')
+      reset()
     }
+  })
+ 
+  const handleLogin = async(formData:LoginForm) => {
+   loginMutate.mutate(formData)
   }
-  
-  
+
   return (
     <>
       <h1 className="text-4xl text-white font-bold">Login</h1>

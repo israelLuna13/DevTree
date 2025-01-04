@@ -1,11 +1,12 @@
-import { BookmarkSquareIcon, UserIcon } from '@heroicons/react/20/solid'
+import { BookmarkSquareIcon, UserIcon,  KeyIcon} from '@heroicons/react/20/solid'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { classNames } from '../utils'
 
 //pages or view of menu
 const tabs = [
     { name: 'Links', href: '/admin', icon: BookmarkSquareIcon },
-    { name: 'Mi Perfil', href: '/admin/profile', icon: UserIcon },
+    { name: 'My Profile', href: '/admin/profile', icon: UserIcon },
+    { name: 'Password', href:'/admin/change-password',icon:KeyIcon}
 ]
 
 //the function join class separate for space white

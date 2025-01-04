@@ -1,19 +1,22 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import  { isAxiosError } from "axios";
 import { toast } from "sonner";
 import { RegisterForm} from "../types";
 import ErrorMessage from "../components/ErrorMessage";
-import { api } from "../config/axios";
+import { useMutation } from "@tanstack/react-query";
+import { createAccount } from "../services/DevTreeService";
 
 
 export default function RegisterView() {
+
+  const location = useLocation()  
+  const navigate = useNavigate()
   
   //  THE TYPE REGISTERFORM WE CAN PUT HERE OR IN USERFORM , LIKE THAT <REGISTERFORM>USERFORM
   const initialValue :RegisterForm= {
     name: "",
     email: "",
-    handle: "",
+    handle: location?.state?.handle ||  "",
     password: "",
     password_confirmation: "",
   };
@@ -25,23 +28,25 @@ export default function RegisterView() {
     formState: { errors },
   } = useForm({ defaultValues: initialValue });
 
+  const registerMutate=useMutation({
+
+    mutationFn:createAccount,
+
+    onError:(error)=>{
+      toast.error(error.message)
+    },
+    onSuccess:(data) =>{
+      toast.success(data)
+      navigate('/auth/login')
+        reset();
+    }
+  })
+
   const password = watch('password')// watch the write the password
   
-
+  // llevar a una mutacion
   const handleRegister = async(formData:RegisterForm) => {
-      try {
-        const {data} = await api.post(`/auth/register`,formData)
-
-        toast.success(data)
-        reset();
-        
-      } catch (error) {
-             //we validate type error for filtrate the errors
-            if(isAxiosError(error)&& error.response)
-            {
-              toast.error(error.response?.data.error)
-            }
-      }
+     registerMutate.mutate(formData)
     
   };
   return (

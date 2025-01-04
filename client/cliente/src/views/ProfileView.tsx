@@ -64,9 +64,10 @@ const handleUserProfileForm=(formData:ProfileForm) => {
 }
 
   return (
-    <form className="bg-white p-10 rounded-lg space-y-5" onSubmit={handleSubmit(handleUserProfileForm)}>
+    <form className="bg-white p-10 rounded-lg space-y-5" 
+          onSubmit={handleSubmit(handleUserProfileForm)}>
       <legend className="text-2xl text-slate-800 text-center">
-        Editar Información
+        Edit your Information
       </legend>
       <div className="grid grid-cols-1 gap-2">
         <label htmlFor="handle">Handle:</label>
