@@ -7,7 +7,8 @@ export interface IUser extends Document{
     password:string,
     description:string,
     image:string,
-    links:string
+    links:string,
+    confirmed:boolean
 }
 //schema
 const userSchema = new Schema({
@@ -45,6 +46,10 @@ const userSchema = new Schema({
     links:{
         type:String,
         default:'[]'
+    },
+    confirmed:{
+        type:Boolean,
+        default:false
     }
 
 })

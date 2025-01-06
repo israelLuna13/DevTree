@@ -7,60 +7,283 @@ import formidable from 'formidable'
 import { v4 as uuid } from "uuid"
 import cloudinary from "../config/cloudinary"
 import { generateJWT } from "../utils/jwt"
+import Token from "../models/Token"
+import { generateToken } from "../utils/token"
+import { AuthEMail } from "../email/AuthEmail"
 
 export const createAccount =async (req:Request,res:Response)=>{
 
-    const {email,password} = req.body
-    const userExist = await User.findOne({email})
-    if(userExist != null)
-    {
-        const error = new Error('User with email is registered')
-         res.status(409).json({error:error.message})
-         return
+    try {
+      const { email, password } = req.body;
+      const userExist = await User.findOne({ email });
+      if (userExist != null) {
+        const error = new Error("User with email is registered");
+        res.status(409).json({ error: error.message });
+        return;
+      }
+      //cast the user name to lowecase and join all words
+      const handle = slugify(req.body.handle, {
+        replacement: "",
+        lower: true,
+      });
+
+      const handleExist = await User.findOne({ handle });
+      if (handleExist != null) {
+        const error = new Error("User name doesnt enable");
+        res.status(409).json({ error: error.message });
+        return;
+      }
+
+      const user = new User(req.body);
+      user.password = await hashPassword(password);
+      user.handle = handle;
+
+      //token
+      const token = new Token();
+      token.token = generateToken();
+      token.user = user.id;
+
+      //send email
+      AuthEMail.sendConfirmationEmail({
+        email: user.email,
+        name: user.name,
+        token: token.token,
+      });
+
+      await Promise.allSettled([user.save(), token.save()]);
+      // user.save();
+      res.send("Account creeated, Check you email for cofirm your account");
+    } catch (e) {
+      console.log(e);
+      const error = new Error("There is issuse");
+      res.status(500).json({ error: error.message });
+      return;
     }
-    //cast the user name to lowecase and join all words
-    const handle = slugify(req.body.handle,
-        {
-        replacement:'',
-        lower:true})
+}
+export const confirmAccount =async (req:Request,res:Response)=>{
+  try {
+    const {token} = req.body
+    const tokenExist = await Token.findOne({token})
+    if(!tokenExist)
+    {
+      const error = new Error('Token is invalidate')
+      res.status(404).json({error:error.message})
+      return
+    }
 
-    const handleExist = await User.findOne({handle})
-        if(handleExist != null)
-        {
-            const error = new Error('User name doesnt enable')
-             res.status(409).json({error:error.message})
-             return
-        }
+    const user = await User.findOne(tokenExist.user)
 
-    const user = new User(req.body);
-    user.password =await hashPassword(password);
-    user.handle=handle
-    user.save();
-    res.send('Registro creado correctamente')
+    if(!user)
+    {
+      const error = new Error('User is not registered')
+      res.status(404).json({error:error.message})
+      return
+    }
+
+    user.confirmed = true
+    await Promise.allSettled([user.save(), tokenExist.deleteOne()])
+    res.send('Account confirmed successfull')
+
+  } catch (e) {
+    console.log(e);
+    const error = new Error("There is issuse");
+    res.status(500).json({ error: error.message });
+    return;
+  }
 }
 
 export const login = async(req:Request,res:Response)=>{
 
-    //search user
-    const {email,password}=req.body
-    //check user exist
-    const userExist = await User.findOne({email})
-    if(!userExist)
-    {
-        const error = new Error('User doesnt exist ')
+  try {
+      //search user
+      const {email,password}=req.body
+      //check user exist
+      const userExist = await User.findOne({email})
+      if(!userExist)
+      {
+          const error = new Error('User doesnt exist ')
+           res.status(404).json({error:error.message})
+           return
+      }
+
+      //check if the user is confirmed
+      if (!userExist.confirmed) {
+        const token = new Token();
+        token.user = userExist.id;
+        token.token = generateToken();
+        await token.save();
+        //Sent email
+        AuthEMail.sendConfirmationEmail({
+          email: userExist.email,
+          name: userExist.name,
+          token: token.token,
+        });
+
+        const error = new Error(
+          "The account is not confirmed, We have sent email the confirm"
+        );
+         res.status(401).json({ error: error.message });
+         return
+      }
+      const isPasswordCorrect=await checkPassword(password,userExist.password)
+      if(!isPasswordCorrect){
+          const error = new Error('Password incorrect')
+          res.status(401).json({error:error.message})
+          return
+      }
+      const token = generateJWT({id:userExist.id})
+      res.send(token)
+    
+  } catch (e) {
+    console.log(e);
+        const error = new Error('There is issuse')
+             res.status(500).json({error:error.message})
+             return
+  }
+}
+
+//generate other token to confirm account
+export const requestConfirmationCode= async (req:Request,res:Response)=>{
+  try {
+   const {email}=req.body
+
+   //User exist
+   const user = await User.findOne({email})
+   if(!user){
+       const error = new Error('The user is not register')
+        res.status(404).json({error:error.message})
+        return
+   }
+
+   if(user.confirmed){
+      const error = new Error('The user is already confirmed')
+       res.status(403).json({error:error.message})
+       return
+   }
+
+   //create token
+   const token = new Token()
+   token.token = generateToken()
+   token.user  = user.id 
+
+   //Sent email
+   AuthEMail.sendConfirmationEmail({
+       email:user.email,
+       name:user.name,
+       token:token.token
+   })
+   await Promise.allSettled([user.save(),token.save()])
+   res.send('Check your email , We have sent the new token')
+  } catch (e) {
+    console.log(e);
+    const error = new Error("There is issuse");
+    res.status(500).json({ error: error.message });
+    return;
+  }
+
+}
+
+export const forgotPassword= async (req:Request,res:Response)=>{
+
+ try {
+  const {email} = req.body
+  const user = await User.findOne({email})
+
+  if(!user)
+  {
+    const error = new Error('The user is not registered')
+    res.status(404).json({error:error.message})
+    return
+  }
+
+  const token = new Token()
+  token.token = generateToken()
+  token.user = user.id
+
+  await token.save()
+
+  //Send email
+  AuthEMail.sentPasswordResetToken({
+    email:user.email,
+    name:user.name,
+    token:token.token
+})
+res.send('Check your email and follow the instructions')
+  
+ } catch (e) {
+  console.log(e);
+  const error = new Error("There is issuse");
+  res.status(500).json({ error: error.message });
+  return;
+ }
+ 
+}
+
+export const validateToken= async (req:Request,res:Response)=>{
+  try {
+      const {token} = req.body
+      const tokenExist = await Token.findOne({token})
+
+      if(!tokenExist){
+          const error = new Error('Token not valide')
+           res.status(404).json({error:error.message})
+           return
+      }
+
+      res.send('Token validate, Enter new password')
+
+  } catch (e) {
+    console.log(e);
+    const error = new Error("There is issuse");
+    res.status(500).json({ error: error.message });
+    return;
+  }
+
+}
+export const updatePasswordWithToken= async (req:Request,res:Response)=>{
+  try {
+    const {token} = req.params
+    const {password} = req.body
+    const tokenExist = await Token.findOne({token})
+
+    if(!tokenExist){
+        const error = new Error('Token not valide')
          res.status(404).json({error:error.message})
          return
     }
-    const isPasswordCorrect=await checkPassword(password,userExist.password)
-    if(!isPasswordCorrect){
-        const error = new Error('Password incorrect')
-        res.status(401).json({error:error.message})
-        return
-    }
 
-    const token = generateJWT({id:userExist.id})
-    res.send(token)
+    const user = await User.findById(tokenExist.user)
+    if(!user)
+    {
+      const error = new Error('The user is not registered')
+      res.status(404).json({error:error.message})
+      return
+    }
+    user.password = await hashPassword(password)
+
+    await Promise.allSettled([user.save(), tokenExist.deleteOne()])
+
+    res.send('The password was changed successfull')
+    
+  } catch (e) {
+    console.log(e);
+    const error = new Error("There is issuse");
+    res.status(500).json({ error: error.message });
+    return;
+  }
 }
+
+export const CheckPassword= async (req:Request,res:Response)=>{
+  const {password} = req.body
+  const user = await User.findById(req.user.id)
+  const isPasswordCorrect = await checkPassword(password,user.password)
+  if(!isPasswordCorrect){
+      const error = new Error('Password is incorrect')
+    return  res.status(401).json({error:error.message})
+  }
+  res.send('Correct password')
+}  
+
 export const getUser= async(req:Request,res:Response)=>{
     res.json(req.user);
 }
@@ -170,7 +393,7 @@ export const searchByHandle= async(req:Request,res:Response) =>{
          return
   }
 }
-
+//change password when the session is active
 export const changePassword= async(req:Request,res:Response) =>{
   try {
     const {password,password_new} = req.body

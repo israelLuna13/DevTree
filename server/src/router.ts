@@ -1,11 +1,11 @@
 import {Router} from 'express'
-import { body } from 'express-validator'
-import { createAccount, login,getUser,updateProfile, uploadImage, getUserByHandle, searchByHandle, changePassword } from './handlers'
+import { body, param } from 'express-validator'
+import { createAccount, login,getUser,updateProfile, uploadImage, getUserByHandle, searchByHandle, changePassword, confirmAccount, requestConfirmationCode, forgotPassword, validateToken, updatePasswordWithToken } from './handlers'
 import { handleInputErrors } from './middleware/validation'
 import { authenticate } from './middleware/auth'
 
 const router = Router()
-/**-----------------------AUTH----------------------------------- */
+
 router.post('/auth/register',
     body('handle').notEmpty().withMessage("The user is required"),
     body('name').notEmpty().withMessage("The user is required") ,
@@ -13,10 +13,51 @@ router.post('/auth/register',
     body('password').notEmpty().isLength({min:6,max:10}).withMessage("The user is required").withMessage('The password must be 6 characters min and 8 charactrs max'),
     handleInputErrors, createAccount )
 
+
 router.post('/auth/login',
     body('email').notEmpty().isEmail().withMessage("The user is required").withMessage('The email is not correct'),
     body('password').notEmpty().withMessage('The password is required'),
     handleInputErrors,login)
+
+
+router.post('/auth/confirm-account',
+        body('token').notEmpty().withMessage('The Token can not to be empty'),
+        handleInputErrors,
+        confirmAccount
+    )
+//request new token
+router.post('/request-code',
+    body('email').isEmail().withMessage('Email not valide'),
+    handleInputErrors,
+    requestConfirmationCode)
+
+ //generate new token
+router.post('/forgot-password',
+    body('email').isEmail().withMessage('Email not valide'),
+    handleInputErrors,
+    forgotPassword
+)
+
+router.post('/validate-token',
+    body('token').notEmpty().withMessage('The Token cant to be empty'),
+    handleInputErrors,
+    validateToken
+)
+router.post('/update-password/:token',
+    param('token').isNumeric().withMessage('Token not is validate'),
+    body('password').isLength({min:6}).withMessage('The password is very short, minimum 8 characters.'),
+    body('password_confirmation').custom((value,{req})=>{
+        //we validated if password is same
+        if(value !== req.body.password){
+            throw new Error('The Password are not same')
+        }
+        //next middleware
+        return true
+    }),
+     handleInputErrors,
+     updatePasswordWithToken
+)
+
 /**---------------------------------------------------------- */
 
 router.get('/auth/user',authenticate,getUser)
@@ -37,8 +78,7 @@ router.patch('/change-passsword',
         changePassword
 )
 
-//public
-
+//------------------------------------------------------------------------
 router.post('/search', 
         body('handle').notEmpty().withMessage("The handle is required"),
         handleInputErrors,
