@@ -9,6 +9,7 @@ import HandleView from "./views/HandleView";
 import NotFoundView from "./views/NotFoundView";
 import HomeView from "./views/HomeView";
 import ChangePasswordView from "./views/ChangePasswordView";
+import ConfirmAccount from "./views/ConfirmAccount";
 
 export default function Router() {
   return (
@@ -17,6 +18,7 @@ export default function Router() {
         <Route element={<AuthLayout />}>
           <Route path="/auth/login" element={<LoginView />} />
           <Route path="/auth/register" element={<RegisterView />} />
+          <Route path="/auth/confirm-account" element={<ConfirmAccount/>}/>
         </Route>
 
         {/* the routes son will got the path /admin  */}

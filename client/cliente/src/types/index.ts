@@ -6,7 +6,9 @@ export interface IUser
     _id:string,
     description:string,
     image:string,
-    links:string
+    links:string,
+    token:string,
+    confirmed:boolean
 }
 
 export type UserHanlde = Pick<IUser, 'description' | 'handle' | 'name'|'image' | 'links' >
@@ -35,3 +37,5 @@ export type ChangePassword = Pick<RegisterForm, 'password' | 'password_confirmat
 {
     password_new:string
 }
+
+export type FormToken = Pick<IUser ,'token'>

@@ -1,6 +1,6 @@
 import { isAxiosError } from "axios";
 import { api } from "../config/axios";
-import { ChangePassword, IUser, LoginForm, RegisterForm, UserHanlde } from "../types";
+import { ChangePassword, FormToken, IUser, LoginForm, RegisterForm, UserHanlde } from "../types";
 
 // we put the token in the headers on the file config/axios
 
@@ -135,6 +135,23 @@ export async function updatePassword(formData:ChangePassword){
       //         Authorization:`Bearer ${token}`
       //     }
       // })      
+      return data        
+  } catch (error) {
+         //we validate type error for filtrate the errors
+         if(isAxiosError(error)&& error.response)
+          {
+            throw new Error(error.response?.data.error)
+          }
+  }
+}
+
+export async function confirmAccount(token:FormToken){
+
+  try {
+      const {data} = await api.post<string>(`/auth/confirm-account`,token)
+      
+      console.log(data);
+      
       return data        
   } catch (error) {
          //we validate type error for filtrate the errors
