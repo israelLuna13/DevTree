@@ -15,7 +15,7 @@ export default function AppLayout() {
 
     if(isLoading) return <Spinner isLoading={isLoading}/>
 
-    if(isError) return <Navigate to={'/auth/login'} />
+    if(isError) return <Navigate to={'/login'} />
     
     //check if data is undefined
     if(data) return <DevTree data={data}/>

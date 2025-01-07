@@ -39,3 +39,5 @@ export type ChangePassword = Pick<RegisterForm, 'password' | 'password_confirmat
 }
 
 export type FormToken = Pick<IUser ,'token'>
+export type FormForgotPassword = Pick<IUser ,'email'>
+export type FormNewPasswoer=Pick<RegisterForm,'password'| 'password_confirmation'>

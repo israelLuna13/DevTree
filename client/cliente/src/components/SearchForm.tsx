@@ -47,7 +47,7 @@ export default function SearchForm() {
         <div className="mt-10">
           {mutation.isPending && <p className="text-center">Loading...</p>}
           {mutation.error && <p className="text-center text-red-600 font-black">{mutation.error.message}</p>}
-          {mutation.data && <p className="text-center text-green-600 font-black">{mutation.data} go to <Link to={'auth/register'} state={{handle:slugify(handle)}}>Register</Link></p>}
+          {mutation.data && <p className="text-center text-green-600 font-black">{mutation.data} go to <Link to={'/register'} state={{handle:slugify(handle)}}>Register</Link></p>}
         </div>
 
         <input

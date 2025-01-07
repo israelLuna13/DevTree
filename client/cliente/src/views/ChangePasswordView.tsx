@@ -96,7 +96,7 @@ export default function ChangePasswordView()
 
                 <input
                         type="submit"
-                        className="bg-cyan-400 p-2 text-lg w-full uppercase text-slate-600 rounded-lg font-bold cursor-pointer"
+                        className="bg-blue-400 p-2 text-lg w-full uppercase text-slate-800 rounded-lg font-bold cursor-pointer"
                         value="Save changes"
                     />
             </form>

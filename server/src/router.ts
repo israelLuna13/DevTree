@@ -6,7 +6,7 @@ import { authenticate } from './middleware/auth'
 
 const router = Router()
 
-router.post('/auth/register',
+router.post('/register',
     body('handle').notEmpty().withMessage("The user is required"),
     body('name').notEmpty().withMessage("The user is required") ,
     body('email').notEmpty().isEmail().withMessage("The user is required").withMessage('The email is not correct'),
@@ -14,13 +14,13 @@ router.post('/auth/register',
     handleInputErrors, createAccount )
 
 
-router.post('/auth/login',
+router.post('/login',
     body('email').notEmpty().isEmail().withMessage("The user is required").withMessage('The email is not correct'),
     body('password').notEmpty().withMessage('The password is required'),
     handleInputErrors,login)
 
 
-router.post('/auth/confirm-account',
+router.post('/confirm-account',
         body('token').notEmpty().withMessage('The Token can not to be empty'),
         handleInputErrors,
         confirmAccount
@@ -58,7 +58,7 @@ router.post('/update-password/:token',
      updatePasswordWithToken
 )
 
-/**---------------------------------------------------------- */
+/**--------------------------AUTH-------------------------------- */
 
 router.get('/auth/user',authenticate,getUser)
 
@@ -66,11 +66,10 @@ router.patch('/auth/user',
     body('handle').notEmpty().withMessage("The user is required")
     ,handleInputErrors,authenticate,updateProfile)
 
-router.post('/user/image',authenticate,uploadImage)
+router.post('/auth/user/image',authenticate,uploadImage)
 
-router.get('/:handle',getUserByHandle)
 
-router.patch('/change-passsword',
+router.patch('/auth/change-passsword',
         body('password').notEmpty().withMessage('The password is required'),
         body('password_new').notEmpty().isLength({min:6,max:10}).withMessage("The user is required").withMessage('The password must be 6 characters min and 8 charactrs max'),
         handleInputErrors,
@@ -79,6 +78,8 @@ router.patch('/change-passsword',
 )
 
 //------------------------------------------------------------------------
+router.get('/:handle',getUserByHandle)
+
 router.post('/search', 
         body('handle').notEmpty().withMessage("The handle is required"),
         handleInputErrors,

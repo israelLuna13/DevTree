@@ -3,17 +3,17 @@ export default function HomeNavegation() {
   return (
     <>
       <Link 
-          to={'auth/login'}
+          to={'/login'}
           className="text-white p-2 uppercase font-black text-xs cursor-poointer"
           >
             Login
       </Link>
 
       <Link 
-          to={'auth/register'}
+          to={'/register'}
           className="bg-lime-500 rounded-lg text-slate-800 p-2 uppercase font-black text-xs cursor-poointer"
           >
-            Create account
+            Create an account
       </Link>
     
     </>

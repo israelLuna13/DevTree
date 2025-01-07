@@ -27,7 +27,6 @@ export default function ConfirmAccount() {
       };
       //when we finish writing the token
       const handleComplete = (token: FormToken['token']) => {
-    
         
        mutate({token})
       };
@@ -35,12 +34,12 @@ export default function ConfirmAccount() {
     <>
           <h1 className="text-5xl font-black text-white">Confirm Account</h1>
       <p className="text-2xl font-light text-white mt-5">
-        Ingresa el código que recibiste {''}
-        <span className=" text-fuchsia-500 font-bold"> to e-mail</span>
+        Enter the code you received{''}
+        <span className=" text-fuchsia-500 font-bold"> by email</span>
       </p>
  
       <form className="space-y-8 p-10 bg-white mt-10">
-        <label className="font-normal text-2xl text-center block">Code of 6 digits</label>
+        <label className="font-normal text-2xl text-center block">6  digits code</label>
         <div className="flex justify-center gap-5">
             {/*  inputs for write the token */}
           <PinInput value={token} onChange={handleChange} onComplete={handleComplete}>
@@ -56,7 +55,7 @@ export default function ConfirmAccount() {
       </form>
  
       <nav className="mt-10 flex flex-col space-y-4">
-        <Link to="/auth/request-code" className="text-center text-gray-300 font-normal">
+        <Link to="/request-code" className="text-center text-gray-300 font-normal">
           Request new code
         </Link>
       </nav>

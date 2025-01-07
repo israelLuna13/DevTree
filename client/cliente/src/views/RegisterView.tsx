@@ -37,7 +37,7 @@ export default function RegisterView() {
     },
     onSuccess:(data) =>{
       toast.success(data)
-      navigate('/auth/login')
+      navigate('/login')
         reset();
     }
   })
@@ -51,7 +51,7 @@ export default function RegisterView() {
   };
   return (
     <>
-      <h1 className="text-4xl text-white font-bold">Create account</h1>
+      <h1 className="text-4xl text-white font-bold">Create an account</h1>
 
       <form
         onSubmit={handleSubmit(handleRegister)}
@@ -59,12 +59,12 @@ export default function RegisterView() {
       >
         <div className="grid grid-cols-1 space-y-3">
           <label htmlFor="name" className="text-2xl text-slate-500">
-            Nombre
+            Name
           </label>
           <input
             id="name"
             type="text"
-            placeholder="Tu Nombre"
+            placeholder="Your name"
             className="bg-slate-100 border-none p-3 rounded-lg placeholder-slate-400"
             {...register("name", {
               required: "The name is required",
@@ -79,7 +79,7 @@ export default function RegisterView() {
           <input
             id="email"
             type="email"
-            placeholder="Email de Registro"
+            placeholder="example@gmail.com"
             className="bg-slate-100 border-none p-3 rounded-lg placeholder-slate-400"
             {...register("email", {
               required: "The email is required",
@@ -99,7 +99,7 @@ export default function RegisterView() {
           <input
             id="handle"
             type="text"
-            placeholder="Nombre de usuario: sin espacios"
+            placeholder="user name"
             className="bg-slate-100 border-none p-3 rounded-lg placeholder-slate-400"
             {...register("handle", {
               required: "The handle is required",
@@ -116,7 +116,7 @@ export default function RegisterView() {
           <input
             id="password"
             type="password"
-            placeholder="Password de Registro"
+            placeholder="*************"
             className="bg-slate-100 border-none p-3 rounded-lg placeholder-slate-400"
             {...register("password", {
               required: "The password is required",
@@ -136,12 +136,12 @@ export default function RegisterView() {
             htmlFor="password_confirmation"
             className="text-2xl text-slate-500"
           >
-            Repetir Password
+            Repit Password
           </label>
           <input
             id="password_confirm"
             type="password"
-            placeholder="Repetir Password"
+            placeholder="*************"
             className="bg-slate-100 border-none p-3 rounded-lg placeholder-slate-400"
             {...register("password_confirmation", {
               required: "The password confirmartion is required",
@@ -155,14 +155,14 @@ export default function RegisterView() {
 
         <input
           type="submit"
-          className="bg-cyan-400 p-3 text-lg w-full uppercase text-slate-600 rounded-lg font-bold cursor-pointer"
+          className="bg-blue-400 p-3 text-lg w-full uppercase text-slate-800 rounded-lg font-bold cursor-pointer"
           value="Create account"
         />
       </form>
 
       <nav className="mt-10">
-        <Link className="text-center text-white text-lg block" to="/auth/login">
-          Do you have account?
+        <Link className="text-center text-white text-lg block" to="/login">
+          Do you have an account?
         </Link>
       </nav>
     </>

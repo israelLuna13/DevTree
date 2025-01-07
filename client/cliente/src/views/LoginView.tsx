@@ -47,10 +47,10 @@ export default function LoginView() {
           <input
             id="email"
             type="email"
-            placeholder="Email de Registro"
+            placeholder="example@gmail.com"
             className="bg-slate-100 border-none p-3 rounded-lg placeholder-slate-400"
             {...register("email", {
-              required: "El Email es obligatorio",
+              required: "The email is required",
               pattern: {
                 value: /\S+@\S+\.\S+/,
                 message: "E-mail no válido",
@@ -66,10 +66,10 @@ export default function LoginView() {
           <input
             id="password"
             type="password"
-            placeholder="Password de Registro"
+            placeholder="*************"
             className="bg-slate-100 border-none p-3 rounded-lg placeholder-slate-400"
             {...register("password", {
-              required: "El Password es obligatorio",
+              required: "The password is required",
             })}
           />
           {errors.password && (
@@ -78,16 +78,22 @@ export default function LoginView() {
         </div>
         <input
           type="submit"
-          className="bg-cyan-400 p-3 text-lg w-full uppercase text-slate-600 rounded-lg font-bold cursor-pointer"
-          value="Iniciar Sesión"
+          className="bg-blue-400 p-3 text-lg w-full uppercase text-slate-800 rounded-lg font-bold cursor-pointer"
+          value="Login"
         />
       </form>
       <nav className="mt-10">
         <Link
           className="text-center text-white text-lg block"
-          to="/auth/register"
+          to="/register"
         >
           Don't you have an account?
+        </Link>
+        <Link
+          className="text-center text-white text-lg block"
+          to="/forgot-password"
+        >
+           Forgot your password?
         </Link>
       </nav>
     </>

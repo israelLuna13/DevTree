@@ -10,15 +10,19 @@ import NotFoundView from "./views/NotFoundView";
 import HomeView from "./views/HomeView";
 import ChangePasswordView from "./views/ChangePasswordView";
 import ConfirmAccount from "./views/ConfirmAccount";
+import ForgotPasswordView from "./views/ForgotPassword";
+import NewPasswordView from "./views/NewPasswordView";
 
 export default function Router() {
   return (
     <BrowserRouter>
       <Routes>
         <Route element={<AuthLayout />}>
-          <Route path="/auth/login" element={<LoginView />} />
-          <Route path="/auth/register" element={<RegisterView />} />
-          <Route path="/auth/confirm-account" element={<ConfirmAccount/>}/>
+          <Route path="/login" element={<LoginView />} />
+          <Route path="/register" element={<RegisterView />} />
+          <Route path="/confirm-account" element={<ConfirmAccount/>}/>
+          <Route path="/forgot-password" element={<ForgotPasswordView/>} />
+          <Route path="/new-password" element={<NewPasswordView/>}/>
         </Route>
 
         {/* the routes son will got the path /admin  */}
