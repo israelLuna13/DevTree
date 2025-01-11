@@ -1,22 +1,20 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-import { RegisterForm} from "../types";
+import { RegisterForm } from "../types";
 import ErrorMessage from "../components/ErrorMessage";
 import { useMutation } from "@tanstack/react-query";
 import { createAccount } from "../services/DevTreeService";
 
-
 export default function RegisterView() {
+  const location = useLocation();
+  const navigate = useNavigate();
 
-  const location = useLocation()  
-  const navigate = useNavigate()
-  
   //  THE TYPE REGISTERFORM WE CAN PUT HERE OR IN USERFORM , LIKE THAT <REGISTERFORM>USERFORM
-  const initialValue :RegisterForm= {
+  const initialValue: RegisterForm = {
     name: "",
     email: "",
-    handle: location?.state?.handle ||  "",
+    handle: location?.state?.handle || "",
     password: "",
     password_confirmation: "",
   };
@@ -28,36 +26,37 @@ export default function RegisterView() {
     formState: { errors },
   } = useForm({ defaultValues: initialValue });
 
-  const registerMutate=useMutation({
+  const registerMutate = useMutation({
+    mutationFn: createAccount,
 
-    mutationFn:createAccount,
-
-    onError:(error)=>{
-      toast.error(error.message)
+    onError: (error) => {
+      toast.error(error.message);
     },
-    onSuccess:(data) =>{
-      toast.success(data)
-      navigate('/login')
-        reset();
-    }
-  })
+    onSuccess: (data) => {
+      toast.success(data);
+      navigate("/login");
+      reset();
+    },
+  });
 
-  const password = watch('password')// watch the write the password
-  
+  const password = watch("password"); // watch the write the password
+
   // llevar a una mutacion
-  const handleRegister = async(formData:RegisterForm) => {
-     registerMutate.mutate(formData)
-    
+  const handleRegister = async (formData: RegisterForm) => {
+    registerMutate.mutate(formData);
   };
   return (
     <>
-      <h1 className="text-4xl text-white font-bold">Create an account</h1>
+      <h1 className="text-4xl text-black font-bold mb-5 text-center">
+        Join DevTree
+      </h1>
+      <p className="text-center text-lg text-slate-400">Create account</p>
 
       <form
         onSubmit={handleSubmit(handleRegister)}
-        className="bg-white px-5 py-20 rounded-lg space-y-10 mt-10"
+        className="bg-white px-5 py-10 rounded-lg space-y-5"
       >
-        <div className="grid grid-cols-1 space-y-3">
+        <div className="grid grid-cols-1 space-y-2">
           <label htmlFor="name" className="text-2xl text-slate-500">
             Name
           </label>
@@ -86,8 +85,7 @@ export default function RegisterView() {
               pattern: {
                 value: /\S+@\S+\.\S+/,
                 message: "E-mail no válido",
-            },
-              
+              },
             })}
           />
           {errors.email && <ErrorMessage>{errors.email.message}</ErrorMessage>}
@@ -120,10 +118,10 @@ export default function RegisterView() {
             className="bg-slate-100 border-none p-3 rounded-lg placeholder-slate-400"
             {...register("password", {
               required: "The password is required",
-              minLength:{
-                value:8,
-                message:'The password most be at least 8 charecters long'
-              }
+              minLength: {
+                value: 8,
+                message: "The password most be at least 8 charecters long",
+              },
             })}
           />
         </div>
@@ -145,7 +143,8 @@ export default function RegisterView() {
             className="bg-slate-100 border-none p-3 rounded-lg placeholder-slate-400"
             {...register("password_confirmation", {
               required: "The password confirmartion is required",
-              validate:(value)=>value === password || "The password is not same"
+              validate: (value) =>
+                value === password || "The password is not same",
             })}
           />
           {errors.password_confirmation && (
@@ -155,14 +154,14 @@ export default function RegisterView() {
 
         <input
           type="submit"
-          className="bg-blue-400 p-3 text-lg w-full uppercase text-slate-800 rounded-lg font-bold cursor-pointer"
+          className="bg-green-500 p-3 text-lg w-full uppercase text-slate-800 rounded-lg font-bold cursor-pointer"
           value="Create account"
         />
       </form>
 
       <nav className="mt-10">
-        <Link className="text-center text-white text-lg block" to="/login">
-          Do you have an account?
+        <Link className="text-center text-slate-500 text-lg block" to="/login">
+          Do you have an account? Login
         </Link>
       </nav>
     </>

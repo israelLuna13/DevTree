@@ -71,7 +71,7 @@ export default function DevTree({data}:DevTreeProps) {
               target="_blank"
               rel="noreferrer noopener"
             >
-              Visitar Mi Perfil:/{data.handle}
+              Go to my profile:/{data.handle}
             </Link>
           </div>
 

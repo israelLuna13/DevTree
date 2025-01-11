@@ -20,6 +20,10 @@ export default function HomeView() {
                         Share your social networks like Tiktok, Facebook, Instagram, 
                         Github, YouTube, Linkdln with a multitude of developers
                     </p>
+                    <p className='text-slate-800 text-xl'>
+                        Search for user or check available username
+                    </p>
+
                     <SearchForm/>
                 </div>
             </div>

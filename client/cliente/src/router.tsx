@@ -12,17 +12,23 @@ import ChangePasswordView from "./views/ChangePasswordView";
 import ConfirmAccount from "./views/ConfirmAccount";
 import ForgotPasswordView from "./views/ForgotPassword";
 import NewPasswordView from "./views/NewPasswordView";
+import AuthDemoLayout from "./layouts/AuthDemoLayout";
 
 export default function Router() {
   return (
     <BrowserRouter>
       <Routes>
         <Route element={<AuthLayout />}>
-          <Route path="/login" element={<LoginView />} />
-          <Route path="/register" element={<RegisterView />} />
+          {/* <Route path="/login" element={<LoginView />} />
+          <Route path="/register" element={<RegisterView />} /> */}
           <Route path="/confirm-account" element={<ConfirmAccount/>}/>
           <Route path="/forgot-password" element={<ForgotPasswordView/>} />
           <Route path="/new-password" element={<NewPasswordView/>}/>
+        </Route>
+        <Route element={<AuthDemoLayout />}>
+          <Route path="/login" element={<LoginView />} />
+          <Route path="/register" element={<RegisterView />} />
+        
         </Route>
 
         {/* the routes son will got the path /admin  */}

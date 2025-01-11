@@ -17,13 +17,14 @@ export default function SearchForm() {
     })
 
     //watch what user is writing
-    const handle = watch('handle')    
+    const handle = watch('handle')  
 
     const handleSearchUserName = () => {
       //change  text to text without spaces blanck and it add -
         const slug = slugify(handle,{
             delimiter:'-'
         })
+        
         //execute de mutation
         mutation.mutate(slug)
     }    
@@ -38,22 +39,23 @@ export default function SearchForm() {
             className="border-none bg-transparent p-2 focus:ring-0 flex-1"
             placeholder="elonmusk, zuck, jeffbezos"
             {...register("handle", {
-              required: "Un Nombre de Usuario es obligatorio",
+              required: "The username is required",
             })}
           />
+            {errors.handle && <ErrorMessage>{errors.handle.message}</ErrorMessage>}
+
         </div>
-        {errors.handle && <ErrorMessage>{errors.handle.message}</ErrorMessage>}
 
         <div className="mt-10">
           {mutation.isPending && <p className="text-center">Loading...</p>}
-          {mutation.error && <p className="text-center text-red-600 font-black">{mutation.error.message}</p>}
+          {mutation.error && <p className="text-center text-red-600 font-black">{mutation.error.message} <Link className="text-black" to={`/${slugify(handle)}`}>go to links</Link></p>}
           {mutation.data && <p className="text-center text-green-600 font-black">{mutation.data} go to <Link to={'/register'} state={{handle:slugify(handle)}}>Register</Link></p>}
         </div>
 
         <input
           type="submit"
-          className="bg-cyan-400 p-3 text-lg w-full uppercase text-slate-600 rounded-lg font-bold cursor-pointer"
-          value="Obtener mi DevTree"
+          className="bg-cyan-400 p-3 text-lg w-full uppercase text-slate-800 rounded-lg font-bold cursor-pointer"
+          value="Get my DevTree"
         />
       </form>
     </>
