@@ -90,7 +90,7 @@ export default function LoginView() {
               </div>
               <input
                 type="submit"
-                className="bg-green-500 p-3 text-lg w-full uppercase text-slate-800 rounded-lg font-bold cursor-pointer"
+                className="bg-green-500 p-3 text-lg w-full uppercase text-white rounded-lg font-bold cursor-pointer"
                 value="Login"
               />
             </form>

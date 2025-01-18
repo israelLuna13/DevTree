@@ -166,9 +166,9 @@ export default function LinkTreeView() {
 
         <button
           onClick={() => mutate(queryClient.getQueryData(["user"])!)}
-          className="bg-cyan-400 p-2 
+          className="bg-green-400 p-2 
                    text-lg w-full uppercase
-                   text-slate-600 rounded-lg font-bold"
+                   text-white rounded-lg font-bold"
         >
           Save change
         </button>

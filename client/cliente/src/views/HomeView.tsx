@@ -10,8 +10,9 @@ export default function HomeView() {
             className='bg-gray-100 py-10 min-h-screen bg-no-repeat 
                             bg-right-top lg:bg-home bg-home-xl'
             >
-            <div className='max-w-5xl mx-auto mt-10'>
+            <div className='max-w-7xl mx-auto mt-10'>
                 <div className='lg:w-1/2 px-10 lg:p-0 space-y-6'>
+                
                     <h1 className='text-6xl font-black'>
                         All your <span className='text-cyan-400'> Social Network </span>
                         here
@@ -25,6 +26,8 @@ export default function HomeView() {
                     </p>
 
                     <SearchForm/>
+
+                   
                 </div>
             </div>
         </main>

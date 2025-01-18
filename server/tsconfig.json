@@ -1,15 +1,15 @@
 {
     "compilerOptions": {
-        "outDir": "./dist",
-        "rootDir": "./src",
-        "lib": ["ESNext"],
-        "target": "ESNext",
-        "moduleResolution": "nodenext",
+        "outDir": "./dist",//where will compliler the project
+        "rootDir": "./src",//place where will be our code
+        "lib": ["ESNext"],//javaScrips lib availables on typescript 
+        "target": "ESNext",//
+        "moduleResolution": "nodenext",//who will compiler the modules
         "module": "NodeNext",
         "strict": false,
         "sourceMap":true ,
-        "esModuleInterop": true,
+        "esModuleInterop": true,// available modules EMC COMMOM JS
         "declaration": true
     },
-    "include": ["src/**/*.ts"]
+    "include": ["src/**/*.ts"]// files that will compiler
 }

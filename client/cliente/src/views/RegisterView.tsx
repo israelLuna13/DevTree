@@ -10,7 +10,7 @@ export default function RegisterView() {
   const location = useLocation();
   const navigate = useNavigate();
 
-  //  THE TYPE REGISTERFORM WE CAN PUT HERE OR IN USERFORM , LIKE THAT <REGISTERFORM>USERFORM
+  //  THE TYPE REGISTERFORM,  WE CAN  PUT HERE OR IN USERFORM , LIKE THAT <REGISTERFORM>USERFORM
   const initialValue: RegisterForm = {
     name: "",
     email: "",
@@ -154,7 +154,7 @@ export default function RegisterView() {
 
         <input
           type="submit"
-          className="bg-green-500 p-3 text-lg w-full uppercase text-slate-800 rounded-lg font-bold cursor-pointer"
+          className="bg-green-500 p-3 text-lg w-full uppercase text-white rounded-lg font-bold cursor-pointer"
           value="Create account"
         />
       </form>

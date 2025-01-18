@@ -47,7 +47,7 @@ export default function ChangePasswordView()
                         Current password:
                     </label>
                     <input type="password"
-                             className="border-none bg-slate-100 rounded-lg p-2"
+                             className="border-none bg-slate-100 rounded-lg p-2 placeholder-slate-400"
                             id='password'
                             placeholder='Currente password'
                             {...register('password',{
@@ -96,7 +96,7 @@ export default function ChangePasswordView()
 
                 <input
                         type="submit"
-                        className="bg-blue-400 p-2 text-lg w-full uppercase text-slate-800 rounded-lg font-bold cursor-pointer"
+                        className="bg-green-400 p-2 text-lg w-full uppercase text-white rounded-lg font-bold cursor-pointer"
                         value="Save changes"
                     />
             </form>

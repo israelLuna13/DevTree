@@ -33,7 +33,7 @@ export default function ForgotPasswordView()
         <>
             <h1 className="text-5xl font-black text-white">Reset your password</h1>
             <p className="text-2xl font-light text-white mt-5">
-                <span className="text-blue-200 font-bold">Forgot your password? Enter your email</span>
+                <span className="text-black font-bold">Forgot your password? Enter your email</span>
             </p>
             
             <form 
@@ -41,12 +41,12 @@ export default function ForgotPasswordView()
                     onSubmit={handleSubmit(handleForgotPassword)}
                     noValidate>
                 <div className="flex flex-col gap-5">
-                    <label className="font-normal text-2xl"
+                    <label className="text-slate-500 text-xl"
                            htmlFor="email">
                             Email:
                            </label>
                     <input type="email" 
-                            className="w-full p-3 border-gray-400 border"
+                            className="w-full p-3 bg-slate-100 border-none placeholder-slate-400"
                             placeholder="Example: user@gmail.com" 
                             {...register("email",{
                                 required:"The email is required",
@@ -62,7 +62,7 @@ export default function ForgotPasswordView()
 
                 <input type="submit"
                         value='Sent code'
-                        className="bg-blue-600 hover:bg-blue-700 w-full p-3 text-white font-black text-xl cursor-pointer" />
+                        className="bg-green-600 hover:bg-green-700 w-full p-3 text-white font-black text-xl cursor-pointer" />
             </form>
 
             <nav className="mt-10 flex flex-col space-y-4">

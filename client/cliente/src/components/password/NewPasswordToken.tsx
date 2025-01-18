@@ -48,12 +48,12 @@ export default function NewPasswordToken({
             onChange={handleChange}
             onComplete={handleComplete}
           >
-            <PinInputField className="h-10 w-10 p-3 rounded-lg border-gray-300 border placeholder-white" />
-            <PinInputField className="h-10 w-10 p-3 rounded-lg border-gray-300 border placeholder-white" />
-            <PinInputField className="h-10 w-10 p-3 rounded-lg border-gray-300 border placeholder-white" />
-            <PinInputField className="h-10 w-10 p-3 rounded-lg border-gray-300 border placeholder-white" />
-            <PinInputField className="h-10 w-10 p-3 rounded-lg border-gray-300 border placeholder-white" />
-            <PinInputField className="h-10 w-10 p-3 rounded-lg border-gray-300 border placeholder-white" />
+            <PinInputField className="h-10 w-10 p-3 rounded-lg border-gray-400 border placeholder-white" />
+            <PinInputField className="h-10 w-10 p-3 rounded-lg border-gray-400 border placeholder-white" />
+            <PinInputField className="h-10 w-10 p-3 rounded-lg border-gray-400 border placeholder-white" />
+            <PinInputField className="h-10 w-10 p-3 rounded-lg border-gray-400 border placeholder-white" />
+            <PinInputField className="h-10 w-10 p-3 rounded-lg border-gray-400 border placeholder-white" />
+            <PinInputField className="h-10 w-10 p-3 rounded-lg border-gray-400 border placeholder-white" />
           </PinInput>
         </div>
       </form>
@@ -61,7 +61,7 @@ export default function NewPasswordToken({
       <nav className="mt-10 flex flex-col space-y-4">
         <Link
           to="/forgot-password"
-          className="text-center text-gray-300 font-normal"
+          className="text-center text-gray-400 font-normal"
         >
           Request new token
         </Link>
